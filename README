@@ -1,0 +1,13 @@
+
+This is a standalone kernel module for the Arm TrustZone CryptoCell 63p REE device.
+
+To build, first set the following envrionment variables
+
+$ export KERNEL_DIR=/home/gby/src/linux/output/arm64/4.10/
+$ export ARCH=arm64
+$ export CROSS_COMPILE=aarch64-linux-gnu-
+
+Then issue the following command:
+
+$ make -f Makefile.setup 
+
