@@ -11,3 +11,7 @@ Then issue the following command:
 
 $ make -f Makefile.setup 
 
+Note: recent kernel version have added a check that limits async. hash transformation
+providers state context sizes in a way which is not compatible with this driver.
+To get around this limitation apply the patch found in the patches/ directory.
+
