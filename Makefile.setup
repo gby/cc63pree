@@ -1,0 +1,28 @@
+# Makefile for Discretix CC63p Linux device driver
+
+MODULE_NAME = dx_cc63p
+
+ifeq ($(KERNEL_DIR),)
+$(error KERNEL_DIR is undefined. Set KERNEL_DIR environment to kernel source tree path)
+endif
+
+PWD := $(shell pwd)
+
+#export CONFIG_CRYPTO_DEV_DX_CC63P = m
+
+KERNEL_VER := $(shell cat $(KERNEL_DIR)/include/config/kernel.release)
+
+# Use kernel build system to build the module
+MODULE_C_FILES = dx_driver.c dx_sysfs.c dx_buffer_mgr.c dx_request_mgr.c dx_cipher.c dx_hash.c dx_aead.c dx_ivgen.c dx_sram_mgr.c
+MODULE_H_FILES = dx_driver.h dx_config.h dx_sysfs.h dx_buffer_mgr.h dx_request_mgr.h dx_cipher.h dx_hash.h dx_aead.h dx_ivgen.h dx_sram_mgr.h
+MODULE_H_FILES += dx_reg_base_host.h dx_host.h dx_crys_kernel.h dx_cc_regs.h dx_bitops.h dx_reg_common.h
+MODULE_H_FILES += dx_pal_log.h dx_pal_types.h hw_queue_defs.h hash_defs.h sep_ctx.h dx_lli_defs.h 
+
+$(MODULE_NAME).ko: $(MODULE_C_FILES) $(MODULE_H_FILES)
+	@echo "Building cc63p module for kernel version: $(KERNEL_VER) ($(ARCH))"
+	@$(MAKE) -C $(KERNEL_DIR) M=$(PWD) $(if $(V),V=$(V)) modules
+
+clean:
+	@$(MAKE) -C $(KERNEL_DIR) M=$(PWD) $(if $(V),V=$(V)) clean
+	@find . -type l -exec rm \{\} \;
+
