@@ -1883,7 +1883,6 @@ dx_hash_create_alg(struct dx_hash_template *template, bool keyed)
 			 template->driver_name);
 	}
 
-	printk(KERN_INFO ".statesize : %d\n", halg->halg.statesize);
 	alg->cra_module = THIS_MODULE;
 	alg->cra_init = dx_hash_cra_init;
 	alg->cra_exit = dx_hash_cra_exit;

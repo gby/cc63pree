@@ -296,8 +296,10 @@ static inline int request_mgr_queues_status_check(
 		unsigned int total_seq_len)
 {
 	unsigned long poll_queue;
+#ifdef SLOT_DEPTH_DEBUG
 	static int min_slots = 999;
 	int cur_slots;
+#endif /* SLOT_DEPTH_DEBUG */
 	
 	/* SW queue is checked only once as it will not 
 	   be chaned during the poll becasue the spinlock_bh 
@@ -310,12 +312,13 @@ static inline int request_mgr_queues_status_check(
 		return -EBUSY;
 	}
 
+#ifdef SLOT_DEPTH_DEBUG
 	cur_slots = DX_HAL_ReadCcRegister( DX_CC_REG_OFFSET(CRY_KERNEL, DSCRPTR_QUEUE0_CONTENT));
 	if (cur_slots < min_slots) {
 		printk (KERN_INFO "HW free slots %d\n", cur_slots);
 		min_slots = cur_slots;
 	}
-
+#endif /* SLOT_DEPTH_DEBUG */
 
 	if ((likely(req_mgr_h->q_free_slots >= total_seq_len)) ) {
 		return 0;
